@@ -14,5 +14,5 @@ public interface HomeService {
 	
 	public List<HomeDto> selectAptName() throws SQLException;
 	
-	public List<HomeDto> select(String dongName, int year, int month, int pageNo) throws SQLException;
+	public List<HomeDto> select(String dongName, int year, int month) throws SQLException;
 }

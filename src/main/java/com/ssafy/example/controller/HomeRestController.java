@@ -4,13 +4,16 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +47,7 @@ public class HomeRestController {
 		// 정보 추가 성공
 		try {
 		service.addFavorite(id, sido, gugun, dong);
+		
 		}catch(SQLIntegrityConstraintViolationException e) {
 			return new ResponseEntity<Object>("해당 지역에는 아파트가 없습니다.", HttpStatus.BAD_REQUEST);
 		}catch(DuplicateKeyException e) {
@@ -53,5 +57,21 @@ public class HomeRestController {
 		List<HomeDto> favorites = service.selectFavorite(id);
 		log.debug("favorite size: {}", favorites.size());
 		return new ResponseEntity<Object>(favorites, HttpStatus.OK);
+	}
+	
+	@RequestMapping("/search")
+	public ResponseEntity<List<HomeDto>> search(@RequestBody Map<String,Object> map, HttpSession session, HttpServletRequest request) throws SQLException {
+	
+		log.debug("!!!!!!!!!!!!!!!!!!!!!"+map.toString());
+		
+		//log.debug("search=> {} {} {} {}", dongName, year, month);
+		
+		// 정보 추가 성공
+		
+			List<HomeDto> list = service.select((String) map.get("dongName"), Integer.parseInt((String) map.get("year")), Integer.parseInt((String)map.get("month")));
+			log.debug("List size: {}", list.size());
+			return new ResponseEntity<List<HomeDto>>(list, HttpStatus.OK);	
+		
+		
 	}
 }

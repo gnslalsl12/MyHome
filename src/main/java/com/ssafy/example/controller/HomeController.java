@@ -15,13 +15,6 @@ import com.ssafy.example.model.service.HomeService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
-@RequestMapping("/main")
-@Slf4j
 public class HomeController {
-
-	@Autowired
-	HomeService service;
-
 
 }

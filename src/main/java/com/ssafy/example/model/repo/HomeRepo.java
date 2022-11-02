@@ -18,5 +18,5 @@ public interface HomeRepo {
 	
 	public List<HomeDto> selectAptName() throws SQLException;
 	
-	public List<HomeDto> select(@Param("dongName") String dongName, @Param("year") int year, @Param("month") int month, @Param("pageNo") int pageNo) throws SQLException;
+	public List<HomeDto> select(@Param("dongName") String dongName, @Param("year") int year, @Param("month") int month) throws SQLException;
 }

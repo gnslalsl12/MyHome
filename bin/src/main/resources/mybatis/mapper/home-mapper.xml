@@ -34,7 +34,7 @@
 
 	<select id="select" parameterType="map" resultType="HomeDto">
 		select * from home where dongName=#{dongName} and dealYear=#{year} and
-		dealMonth=#{month}
+		dealMonth=#{month} LIMIT #{pageNo},10
 	</select>
 
 	<resultMap type="HomeDto" id="HomeMap">

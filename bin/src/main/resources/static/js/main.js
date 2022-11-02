@@ -166,7 +166,6 @@ let date = new Date();
       
       dongs[0].innerText=dong;
       
-      console.log(selects[0].innerText, guguns[0].innerText, dongs[0].innerText);
   }
   
   

@@ -49,7 +49,7 @@
               </select>
             </div>
             <div class="form-group col-md-2" style="margin: auto 0; display:contents">
-              <button type="button" id="list-btn" class="btn btn-outline-primary">
+              <button type="submit" id="list-btn" class="btn btn-outline-primary">
                 아파트매매정보
               </button>
               </div>
@@ -146,10 +146,9 @@
 <script>
   ///////////////////////// 아파트 매매 정보 /////////////////////////
 
- /*  <c:if test="${!empty loginUser}">
+  <c:if test="${!empty loginUser}">
   	sendRequest("favorite",false);
-  </c:if>  */
-  
+  </c:if>
   
   document.querySelector("#search-aptName").addEventListener("click", ()=>{
 	  //document.querySelector("#searchAptName").submit();
@@ -170,8 +169,6 @@
 	  let dongSel = document.querySelector("#dong");
 	  let dong = dongSel[dongSel.selectedIndex].text;
 	  
-	  console.log("${root}/main/addFavorite?sido="+sido+"&gugun="+gugun+"&dong="+dong);
-	  
 	  //console.log(url);
 	  /* config = {
 			  
@@ -184,9 +181,8 @@
 	  
 	  (
 		async ()=>{
-	  		const url = "/main/addFavorite?sido="+sido+"&gugun="+gugun+"&dong="+dong;
-	  		//var decodeStr = decodeURI("http://localhost:8080http://localhost:8080/main/addfavorite?sido=" + sido + "&gugun=" + gugun + "&dong=" + dong);
-			const response = await fetch(url);
+	  		const url = "${root}/main/addFavorite?sido="+sido+"&gugun="+gugun+"&dong="+dong;
+			const response = await  fetch(url);
 			if(response.ok){
 				let info = await response.json();
 				const favorite =document.querySelector("#favorite"); 
@@ -212,7 +208,7 @@
 	  console.log('test');
 	  e.preventDefault();
 	  
-	  //let url_s ="${root}/main/search";
+	  let url = getContextPath()+"/main?action=search";
 	  
 	  let yearSel = document.querySelector("#year");
 	  let year = yearSel[yearSel.selectedIndex].value;
@@ -222,16 +218,8 @@
 	  
 	  let dongSel = document.querySelector("#dong");
 	  let dong = dongSel[dongSel.selectedIndex].text;
-	  
-	  console.log(dong, dongSel);
-	  
-	  //url_s+="&dong="+dong+"&year="+year+"&month="+month;
-	  
-	  //console.log(url_s);
-	  
-	/* 
-	  let url_search = getContextPath()+"/main/search";
-	  url_search += "&dong="+dong+"&year="+year+"&month="+month; */
+	
+	  url += "&dong="+dong+"&year="+year+"&month="+month;
 			  
 		/*
 		          <div id='' style='display: inline-block;'>
@@ -241,98 +229,32 @@
           </div>
 		
 		*/
-		/* console.log(url_search);
-		console.log(encodeURI(encodeURIComponent(url_search))); */
- 	/* (
-		async()=>{
-			const url_search = "/main/search";
-			let config = {
-					method:"post",
-					headers:{
-						"content-type" : "application/json;charset=utf-8"
-						
-		            },
-		            body:JSON.stringify({
-		            	"dongName":dong,
-		            	"year":year,
-		            	"month":month,
-		            	
-		            }),
-				};
-			
-			console.log(config);
-			//var decodeStr = decodeURI(url_search);
-			try{
-				const result = await fetch(url_search, config);
-				console.log(result);
-				if(result.ok){
-					const response  = await result.json();
-					
-					makeList(response.results);
-					console.log("??????????"+response);
-				}
-			}catch(e){
-				//console.log(e.message);
-			}
-			
-		}
-	)(); */
-	(
-		async ()=>{
-			const url="/main/search";
-			let config ={
-				method:"post",
-				headers:{
-					"content-type" : "application/json;charset=utf-8"
-				},
-				body:JSON.stringify({
-					"dongName":dong,
-					"year":year,
-					"month":month,
-				}),
-			};
-			
-			try{
-				const result = await fetch(url,config);
-				
-				if(result.ok){
-					const data = await result.json();
-					console.log(data);
-					makeList(data);
-				}
-			}catch(e){
-				alert(e.message);
-			}
-		}		
-	)();
-	
-	
-	 /* fetch("/main/search"+"&dong="+dong+"&year="+year+"&month="+month)
+	  fetch(url)
 	  .then(response => response.json())
 	  .then(data => {
 		  console.log(data);
 		  makeList(data.results);
 		  console.log(data.resultLen);
-		  /* document.querySelector('#pageLen').innerText = '/'+Math.ceil(data.resultLen/10);
+		  document.querySelector('#pageLen').innerText = '/'+Math.ceil(data.resultLen/10);
 		  document.querySelector('#pagebnt').addEventListener('click',(e)=>{
 				e.preventDefault();
 			  let makeUrl = "&pageNo="+document.querySelector('#pageId').value;
-			  console.log(url_search+makeUrl);
-			  fetch(url_search+makeUrl)
+			  console.log(url+makeUrl);
+			  fetch(url+makeUrl)
 			  .then(response => response.json())
 			  .then(data =>{
 				  makeList(data.results);
-			  }) 
+			  })
 		  })
-	  }) */
-  });  
+	  })
+  });
 
   // <거래금액>   170,000</거래금액><거래유형> </거래유형><건축년도>2011</건축년도><년>2021</년><도로명>소공로</도로명><도로명건물본번호코드>00035</도로명건물본번호코드><도로명건물부번호코드>00000</도로명건물부번호코드><도로명시군구코드>11140</도로명시군구코드><도로명일련번호코드>04</도로명일련번호코드><도로명지상지하코드>0</도로명지상지하코드><도로명코드>3101004</도로명코드><법정동> 회현동1가</법정동><법정동본번코드>0208</법정동본번코드><법정동부번코드>0000</법정동부번코드><법정동시군구코드>11140</법정동시군구코드><법정동읍면동코드>12100</법정동읍면동코드><법정동지번코드>1</법정동지번코드><아파트>남산롯데캐슬아이리스</아파트><월>1</월><일>8</일><일련번호>11140-1142</일련번호><전용면적>133.98</전용면적><중개사소재지> </중개사소재지><지번>208</지번><지역코드>11140</지역코드><층>26</층><해제사유발생일> </해제사유발생일><해제여부> </해제여부>
   // 주소를 넘기거나 함수를 호출하거나  
   function makeList(datas) {
     document.querySelector("#t").setAttribute("style", "display: ;");
     let tbody = document.querySelector("#aptlist");
-   	console.log(datas);
+   
     initTable();
 	    
     /*
@@ -357,7 +279,7 @@
     */
     let cnt = 0;
     datas.forEach((apt) => {
-    	/* if(cnt >=10){
+    	if(cnt >=10){
     		return;
     		//create button -> map에다가 저장했던 길이 배열을 가져오면 총 버튼을
     		// 몇개 만들 수 있는지 알 수 있다. 62/10 = 7개 1,2,3,4,5,6,7
@@ -367,7 +289,7 @@
     		//-> LIMIT? 라는걸 써야할거야->
     		
     		//[3]/8 [이동]
-    	} */
+    	}
     	
       let tr = document.createElement("tr");
 	  

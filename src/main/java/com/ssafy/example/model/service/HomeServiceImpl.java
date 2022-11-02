@@ -37,8 +37,8 @@ public class HomeServiceImpl implements HomeService{
 	}
 
 	@Override
-	public List<HomeDto> select(String dongName, int year, int month, int pageNo) throws SQLException {
-		return hrepo.select(dongName, year, month, pageNo);
+	public List<HomeDto> select(String dongName, int year, int month) throws SQLException {
+		return hrepo.select(dongName, year, month);
 	}
 
 }
