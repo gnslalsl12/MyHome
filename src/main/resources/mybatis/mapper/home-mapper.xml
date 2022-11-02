@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.example.model.repo.HomeRepo">
+
+	<!-- public class HomeDto { private String sidoName; private String gugunName; 
+		private String dongName; private String aptName; private String lat; private 
+		String lng; private String dealAmount; private int dealYear; private int 
+		dealMonth; private int area; private int floor; } -->
+
+	<insert id="addFavorite" parameterType="map">
+		insert into interestarea values (#{userId},(select distinct dongCode from
+		home where sidoName=#{sido} and gugunName=#{gugun} and
+		dongName=#{dong}));
+	</insert>
+
+	<select id="selectFavorite" parameterType="string"
+		resultType="HomeDto">
+		select * from home join (select dongCode from interestarea where
+		user_id=#{id}) as inter on home.dongCode = inter.dongCode group by
+		home.dongcode
+	</select>
+
+	<select id="bestPath" parameterType="map" resultType="HomeDto">
+		select DISTINCT aptName, lat, lng from home where dongName=#{dongName} and
+		dealYear=#{dealYear} and dealMonth=#{dealMonth} and
+		aptName!=#{aptName}
+	</select>
+
+	<select id="selectAptName" resultType="HomeDto">
+		select * from home
+	</select>
+
+	<select id="select" parameterType="map" resultType="HomeDto">
+		select * from home where dongName=#{dongName} and dealYear=#{year} and
+		dealMonth=#{month} LIMIT #{pageNo},10
+	</select>
+
+	<resultMap type="HomeDto" id="HomeMap">
+		<result column="sidoName" property="sidoName" />
+		<result column="gugunName" property="gugunName" />
+		<result column="dongName" property="dongName" />
+		<result column="aptName" property="aptName" />
+		<result column="lat" property="lat" />
+		<result column="lng" property="lng" />
+		<result column="dealAmount" property="dealAmount" />
+		<result column="dealYear" property="dealYear" />
+		<result column="dealMonth" property="dealMonth" />
+		<result column="area" property="area" />
+		<result column="floor" property="floor" />
+	</resultMap>
+
+</mapper>
